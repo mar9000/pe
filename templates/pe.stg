@@ -1,0 +1,115 @@
+/**
+ * Copyright 2015 Marco LOMBARDO, mar9000 near google.com .
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * This file is part of the PE project.
+ */
+
+delimiters "$", "$"
+
+/** Main template.   */
+language(l) ::= <<
+language $l.name$ [
+    $l.extensions:extension(); separator="\n"$;
+    $l.declarations:declaration(); separator="\n"$
+]
+>>
+
+extension(e) ::= <<
+extension $e.extensionName$ for $e.rootNodes:{n | $n.name$}; separator=","$
+>>
+
+declaration(d) ::= <<
+$d:(d.class.simpleName)()$
+>>
+
+PENodeTypeImpl(n) ::= <<
+$if(n.root)$root$else$node$endif$ $n.name$$if(n.superNodeTypes)$ extends $n.superNodeTypes:{sn | $sn.name$}; separator=","$$endif$ [
+    $n.elements:element(); separator="\n"$
+]
+>>
+
+PEDataTypeImpl(n) ::= <<
+datatype $n.name$=$n.value$
+>>
+
+PEBuiltinTypeImpl(n) ::= <<
+primitive $n.name$
+>>
+
+PEEnumNodeImpl(n) ::= <<
+enum $n.name$ [
+    $n.values:enumValue(); separator="\n"$
+]
+>>
+
+enumValue(v) ::= <<
+$v.key$=$v.value$
+>>
+
+PEKeywordImpl(n) ::= <<
+keyword $n.name$=$n.value$
+>>
+
+element(e) ::= <<
+$e:(e.class.simpleName)()$
+>>
+
+PEFlagImpl(f) ::= <<
+flag $f.name$=$f.keyword$
+>>
+
+PEPropertyImpl(p) ::= <<
+property $p.name$=$p.primitiveType.name$$if(!p.mandatory)$?$endif$
+>>
+
+PEConstantImpl(c) ::= <<
+constant '$c.name$'
+>>
+
+PEChildImpl(c) ::= <%
+child $c.name$=$c.nodeType.name$
+  [$c.cardinality$]
+  $if(c.attributes)$ [$\n$
+    $c.attributes:childAttribute()$$\n$
+  ]$endif$
+%>
+
+childAttribute(a) ::= <<
+    $a:(a.class.simpleName)()$
+>>
+
+PEListProjectionImpl(l) ::= <%
+projection $l.layout$(
+  $if(l.prefix)$
+    $l.prefix$
+  $endif$
+  $if(l.separator)$
+    ,$l.separator$
+  $endif$
+  $if(l.suffix)$
+    ,$l.suffix$
+  $endif$
+)
+%>
+
+PEElementAttributeImpl(a) ::= <<
+$a.name$
+>>
+
+PEGroupImpl(g) ::= <<
+group [
+    $g.elements:element(); separator="\n"$
+]$if(g.cardinality)$?$endif$
+>>

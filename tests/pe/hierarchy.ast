@@ -1,0 +1,36 @@
+language Test [
+    extension '.test' for Root;
+    root Root [
+    ]
+    node NodeA extends Root [
+    ]
+    node NodeA1 extends NodeA [
+        constant 'a1'
+    ]
+    node NodeA2 extends NodeA [
+        constant 'a2'
+    ]
+    node NodeB extends Root [
+        constant 'b'
+    ]
+    node NodeC [
+        constant 'c'
+    ]
+    node NodeC1 extends NodeC [
+        constant 'c1'
+    ]
+    node NodeC2 extends NodeC [
+        constant 'c2'
+    ]
+    enum NUMBER [
+        FIRST=1
+        SECOND=2
+        THIRD=III
+    ]
+    keyword k1=it's
+    keyword k2=back\back
+    datatype _Identifier=[a-zA-Z\u0080-\u00FF_]([a-zA-Z\u0080-\u00FF_]|[0-9])*
+    datatype _NumberLiteral=\-?(\.[0-9]+|[0-9]+(\.[0-9]*)?)
+    datatype _StringLiteral="(\\[\\"]|[^\\"])*"
+    datatype _HtmlLiteral=\<(\<.*?\>|[^\<\>])*\>
+]

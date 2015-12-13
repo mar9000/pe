@@ -1,0 +1,155 @@
+/**
+ * Copyright 2015 Marco LOMBARDO, mar9000 near google.com .
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * This file is part of the PE project.
+ */
+
+// Projectional Editor definition for the DOT language.
+language org.mar9000.mps.grammar.DOT uses
+  extension '.dot' for Graph;
+
+// *** Nodes.   **********
+
+Graph:
+  strict=STRICT? type=GraphType name=string?
+  statementList<indentList('{', '}')>=Statement*
+;
+
+// Assignement, Attribute, Edge, Node have a leading ';' .
+Statement:
+    AssignmentStatement
+  | AttributeStatement
+  | EdgeStatement
+  | NodeStatement
+  | Subgraph
+  | Comment
+  | LineComment
+  | PreProc
+;
+
+AssignmentStatement:
+  left=Id '=' right=Id ';'
+;
+
+AttributeStatement:
+  attributeType=(GRAPH='graph' | NODE='node' | EDGE='edge')
+  multipleList=AttributeMultipleList
+  ';'
+;
+
+AttributeMultipleList:
+    lists<hList()>=AttributeList+
+    ;
+
+AttributeList:
+  attributeList<hList('[', ',', ']')>=AttributeValue+
+;
+
+AttributeValue:
+  name=Id ('=' value=Id)?
+;
+
+EdgeEnd:
+  NodeId | Subgraph
+;
+
+EdgeRHS:
+  operator=EdgeOperator end=EdgeEnd
+;
+
+// endList use an indentList because elements (subgraph) inside it can be indented.
+EdgeStatement:
+  start=EdgeEnd endList<indentList()>=EdgeRHS+
+  multipleList=AttributeMultipleList?
+  ';'
+;
+
+NodeStatement:
+  nodeId=NodeId multipleList=AttributeMultipleList?
+  ';'
+;
+
+NodeId:
+  id=Id (':' first=Id (':' second=Id)?)?
+;
+
+Subgraph:
+  (SUBGRAPH label=Id?)?
+  statementList<indentList('{', '}')>=Statement*
+;
+
+// TODO: lines are not strings but strings without '*/'.
+Comment:
+  lines<indentList('/*', '*/')>=CommentLine*
+;
+
+CommentLine:
+    line=string?
+    ;
+
+LineComment:
+  '//' comment=string?
+;
+
+PreProc:
+  '#' description=string?
+;
+
+// *** Enums/keywords.   *********
+
+enum GraphType: GRAPH='graph' | DIGRAPH='digraph';
+
+enum EdgeOperator:
+  DIRECTED='->' | UNDIRECTED='--'
+;
+
+keywords util: STRICT='strict', SUBGRAPH='subgraph';
+
+// *** Constr. types.   *********
+
+fragment LETTER: [a-zA-Z\u0080-\u00FF_];
+
+fragment DIGIT: [0-9];
+
+fragment TAG: '\\<' .*? '\\>';
+
+fragment _Identifier:
+  LETTER (LETTER|DIGIT)*
+;
+
+fragment _NumberLiteral:
+  '\\-'? ('\\.' DIGIT+ | DIGIT+ ('\\.' DIGIT*)? )
+;
+
+fragment _StringLiteral:
+  '"' ('\\\\' [\\"] | [^\\"])* '"'
+;
+
+fragment _HtmlLiteral:
+  '\\<' (TAG | [^\<\>])* '\\>'
+;
+
+datatype Id:
+    _Identifier
+  | _StringLiteral
+  | _HtmlLiteral
+  | _NumberLiteral
+;
+
+// *** Primitives.   ***
+
+primitive string;
+
+// End.

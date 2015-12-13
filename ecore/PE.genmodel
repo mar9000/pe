@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/PE/src-gen" editDirectory="" editorDirectory=""
+    modelPluginID="PE" modelName="PE" modelPluginClass="" rootExtendsInterface=""
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" suppressEMFTypes="true"
+    suppressEMFMetaData="true" suppressEMFModelTags="true" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="pe.edit" editorPluginID="pe.edit"
+    language="" operationReflection="true" importOrganizing="true">
+  <foreignModel>PE.ecore</foreignModel>
+  <genPackages prefix="PE" disposableProviderFactory="true" ecorePackage="PE.ecore#/">
+    <nestedGenPackages prefix="Ecore" basePackage="org.mar9000.pe" disposableProviderFactory="true"
+        ecorePackage="PE.ecore#//ecore">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="PE.ecore#//ecore/PEElementCardinality">
+        <genEnumLiterals ecoreEnumLiteral="PE.ecore#//ecore/PEElementCardinality/QUESTION"/>
+        <genEnumLiterals ecoreEnumLiteral="PE.ecore#//ecore/PEElementCardinality/ARRAY"/>
+        <genEnumLiterals ecoreEnumLiteral="PE.ecore#//ecore/PEElementCardinality/NO_SUFFIX"/>
+        <genEnumLiterals ecoreEnumLiteral="PE.ecore#//ecore/PEElementCardinality/MANDATORY_ARRAY"/>
+      </genEnums>
+      <genClasses ecoreClass="PE.ecore#//ecore/PELanguage">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PELanguage/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference PE.ecore#//ecore/PELanguage/extensions"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference PE.ecore#//ecore/PELanguage/declarations"/>
+      </genClasses>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEExtension">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEExtension/extensionName"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference PE.ecore#//ecore/PEExtension/rootNodes"/>
+      </genClasses>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEDeclaration"/>
+      <genClasses ecoreClass="PE.ecore#//ecore/PENode">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PENode/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PENode/label"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PE.ecore#//ecore/PENode/elements"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference PE.ecore#//ecore/PENode/superNodes"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="PE.ecore#//ecore/PEElement">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEElement/name"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PE.ecore#//ecore/PEElement/attributes"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEElement/cardinality"/>
+      </genClasses>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEElementAttribute">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEElementAttribute/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEElementAttribute/value"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="PE.ecore#//ecore/PEAtom"/>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEEnumNode">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEEnumNode/name"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PE.ecore#//ecore/PEEnumNode/values"/>
+      </genClasses>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEEnumValue">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEEnumValue/key"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEEnumValue/value"/>
+      </genClasses>
+      <genClasses ecoreClass="PE.ecore#//ecore/PESyntaxNode"/>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEKeywordsDecl">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEKeywordsDecl/name"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PE.ecore#//ecore/PEKeywordsDecl/keywords"/>
+      </genClasses>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEKeyword">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEKeyword/key"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEKeyword/value"/>
+      </genClasses>
+      <genClasses ecoreClass="PE.ecore#//ecore/PEConstrainedStringNode">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEConstrainedStringNode/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PE.ecore#//ecore/PEConstrainedStringNode/value"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="PE.ecore#//ecore/PELanguagePart"/>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

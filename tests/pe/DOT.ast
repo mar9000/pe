@@ -1,0 +1,113 @@
+language org.mar9000.mps.grammar.DOT [
+    extension '.dot' for Graph;
+    root Graph [
+        flag strict=strict
+        property type=GraphType
+        property name=string?
+        child statementList=Statement[0..n] [
+            projection indentList({,})
+        ]
+    ]
+    node Statement [
+    ]
+    node AssignmentStatement extends Statement [
+        property left=Id
+        constant '='
+        property right=Id
+        constant ';'
+    ]
+    node AttributeStatement extends Statement [
+        property attributeType=AttributeStatement_attributeTypeEnum
+        child multipleList=AttributeMultipleList[1]
+        constant ';'
+    ]
+    enum AttributeStatement_attributeTypeEnum [
+        GRAPH=graph
+        NODE=node
+        EDGE=edge
+    ]
+    node AttributeMultipleList [
+        child lists=AttributeList[1..n] [
+            projection hList()
+        ]
+    ]
+    node AttributeList [
+        child attributeList=AttributeValue[1..n] [
+            projection hList([,,,])
+        ]
+    ]
+    node AttributeValue [
+        property name=Id
+        group [
+            constant '='
+            property value=Id
+        ]?
+    ]
+    node EdgeEnd [
+    ]
+    node EdgeRHS [
+        property operator=EdgeOperator
+        child end=EdgeEnd[1]
+    ]
+    node EdgeStatement extends Statement [
+        child start=EdgeEnd[1]
+        child endList=EdgeRHS[1..n] [
+            projection indentList()
+        ]
+        child multipleList=AttributeMultipleList[0..1]
+        constant ';'
+    ]
+    node NodeStatement extends Statement [
+        child nodeId=NodeId[1]
+        child multipleList=AttributeMultipleList[0..1]
+        constant ';'
+    ]
+    node NodeId extends EdgeEnd [
+        property id=Id
+        group [
+            constant ':'
+            property first=Id
+            group [
+                constant ':'
+                property second=Id
+            ]?
+        ]?
+    ]
+    node Subgraph extends Statement,EdgeEnd [
+        group [
+            constant 'subgraph'
+            property label=Id?
+        ]?
+        child statementList=Statement[0..n] [
+            projection indentList({,})
+        ]
+    ]
+    node Comment extends Statement [
+        child lines=CommentLine[0..n] [
+            projection indentList(/*,*/)
+        ]
+    ]
+    node CommentLine [
+        property line=string?
+    ]
+    node LineComment extends Statement [
+        constant '//'
+        property comment=string?
+    ]
+    node PreProc extends Statement [
+        constant '#'
+        property description=string?
+    ]
+    enum GraphType [
+        GRAPH=graph
+        DIGRAPH=digraph
+    ]
+    enum EdgeOperator [
+        DIRECTED=->
+        UNDIRECTED=--
+    ]
+    keyword STRICT=strict
+    keyword SUBGRAPH=subgraph
+    datatype Id=[a-zA-Z\u0080-\u00FF_]([a-zA-Z\u0080-\u00FF_]|[0-9])*|"(\\[\\"]|[^\\"])*"|\<(\<.*?\>|[^\<\>])*\>|\-?(\.[0-9]+|[0-9]+(\.[0-9]*)?)
+    primitive string
+]
